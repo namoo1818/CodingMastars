@@ -1,4 +1,10 @@
-# 첫시도(틀림)
+"""
+첫시도(틀림)
+달고나가 다음과 같은 모양일 때 달고나를 2개로 인식한다
+010
+000 
+이는 yamyam 리스크에 들린 위치를 순서대로 저장하면서 생긴 오류다
+다음 행에서 달고나가 이어지는 경우를 예상하지 못했다
 
 n, m = map(int, input().split())
 dalgona = []
@@ -6,22 +12,25 @@ yamyam = [[0]*m for _ in range(n)] # 들린 위치를 저장하기 위한 리스
 steps = [(-1,0),(1,0),(0,-1),(0,1)]
 count = 0 # 달고나 개수
 for i in range(n):
-    dalgona.append(list(map(int, str(input()))))
+    dalgona.append(list(map(int, input())))
 for i in range(n):
     for j in range(m):
         if dalgona[i][j] == 0:
             new_dal = True
-            yamyam[i][j] += 1
+            yamyam[i][j] = 1
             for step in steps:
                 k = i + step[0]
                 l = j + step[1]
-                if k>=0 and k<n and l>=0 and l<m :
-                    if yamyam[k][l] == 1:
-                        new_dal = False
-            if new_dal == True:
-                count += 1
+                if k>=0 and k<n and l>=0 and l<m and yamyam[k][l] == 1:
+                    new_dal = False   
+        else:
+            new_dal = False
+
+        if new_dal == True:
+            count += 1
 print(count)
 
+"""
 # DFS 풀이
 
 from collections import deque
@@ -51,7 +60,45 @@ for i in range(n):
 print(count)
 
 
+
 # BFS 풀이
+
+from collections import deque
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+count = 0
+
+def bfs(x, y):
+    queue = deque(())
+    queue.append((x, y))
+
+    if graph[x][y] == 1:
+        return 0
+
+    while queue:
+        x, y = queue.popleft()
+        graph[x][y] = 1
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if nx < 0 or ny < 0 or nx >= n or ny >= m:
+                continue
+            if graph[nx][ny] == 0:
+                queue.append((nx, ny))
+    return 1
+
+
+n, m = map(int, input().split())
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input())))
+
+for i in range(n):
+    for j in range(m):
+        count += bfs(i, j)
+
+print(count)
 
 
 """
