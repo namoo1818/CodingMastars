@@ -1,31 +1,19 @@
 # 트리의 높이를 구하는 문제
 # BFS
-# import sys
+import sys
 
-# from collections import deque
+from collections import deque
 
-# def bfs(node):
-#     queue = deque()
-#     queue.append(node)
-#     while queue:
-#         node = queue.popleft()
-#         for n in graph[node]:
-#             if check[n] == 0:
-#                 check[n] = check[node]+1
-#                 queue.append(n)
+def bfs(node):
+    queue = deque()
+    queue.append(node)
+    while queue:
+        node = queue.popleft()
+        for n in graph[node]:
+            if check[n] == 0:
+                check[n] = check[node]+1
+                queue.append(n)
             
-# n = int(input())
-# l = list(map(int, input().split()))
-# graph = [[] for _ in range(n+1)]
-# num = 0
-# for i in l:
-#     num += 1
-#     graph[num].append(i)
-#     graph[i].append(num)
-# check = [0]*(n+1)
-# bfs(1)
-# print(check[n]-1 if check[n] > 0 else -1)
-
 n = int(input())
 l = list(map(int, input().split()))
 graph = [[] for _ in range(n+1)]
@@ -33,27 +21,63 @@ num = 0
 for i in l:
     num += 1
     graph[num].append(i)
-visited = [False] * (n+1)
-result = []
+    graph[i].append(num)
+check = [0]*(n+1)
+bfs(1)
+print(check[n]-1 if check[n] > 0 else -1)
 
-print(graph)
+# import heapq
+# import sys
+# # input = sys.stdin.readline
+# INF = int(1e9) # 무한을 의미하는 값으로 10억을 설정
 
-def dfs(v, num):
-  num += 1
-  visited[v] = True
+# # 노드의 개수, 간선의 개수를 입력받기
+# n = int(input())
+# # 시작 노드를 1번 헛간으로 설정
+# start = 1
+# # 각 노드에 연결되어 있는 노드에 대한 정보를 담는 리스트를 만들기
+# graph = [[] for i in range(n + 1)]
+# visited = [False] * (n+1)
+# # 최단 거리 테이블을 모두 무한으로 초기화
+# distance = [INF] * (n + 1)
+# l = list(map(int, input().split()))
+# num = 0
+# for i in l:
+#     num += 1
+#     graph[i].append((num, 1))
 
-  if v == n:
-    result.append(num)
 
-  for i in graph[v]:
-    if not visited[i]:
-      dfs(i, num)
+# def get_smallest_node():
+#     min_value = INF
+#     index = 0
+#     for i in range(1, n+1):
+#         if distance[i] < min_value and not visited[i]:
+#             min_value = distance[i]
+#             index = 1
+#     return index
 
-dfs(1, 0)
-if len(result) == 0:
-  print(-1)
-else:
-  print(result[0]-1)
+# def dijkstra(start):
+#     distance[start] = 0
+#     visited[start] = True
+#     for j in graph[start]:
+#         distance[j[0]] = j[1]
+#     for i in range(n-1):
+#         now = get_smallest_node()
+#         visited[now] = True
+#         for j in graph[now]:
+#             cost = distance[now] + j[1]
+#             if cost < distance[j[0]]:
+#                 distance[j[0]] = cost
+
+# dijkstra(start)
+
+# dis = []
+
+# for i in range(1, n+1):
+#     if distance[i] != INF:
+#         dis.append(distance[i])
+# print(max(dis))
+
 
 
 
